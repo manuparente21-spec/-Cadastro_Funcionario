@@ -1,0 +1,86 @@
+class Funcionario:
+    def __init__(self, nome: str, cargo: str, salario: float):
+        self.nome = nome
+        self.cargo = cargo
+        self.salario = salario
+
+    def __str__(self):
+        return f"Nome: {self.nome} | Cargo: {self.cargo} | Salário: R${self.salario:.2f}"
+
+
+class Empresa:
+    def __init__(self):
+        self.funcionarios = []
+
+    def adicionar_funcionario(self, nome: str, cargo: str, salario: float):
+        funcionario = Funcionario(nome, cargo, salario)
+        self.funcionarios.append(funcionario)
+        print(f"\nFuncionário '{nome}' adicionado com sucesso.\n")
+
+    def listar_funcionarios(self):
+        if not self.funcionarios:
+            print("\nNenhum funcionário cadastrado.\n")
+            return
+        print("\nLista de Funcionários:")
+        for f in self.funcionarios:
+            print(f)
+        print()
+
+    def buscar_por_nome(self, nome: str):
+        encontrados = [f for f in self.funcionarios if f.nome.lower() == nome.lower()]
+        if encontrados:
+            print(f"\nFuncionário(s) encontrado(s) com o nome '{nome}':")
+            for f in encontrados:
+                print(f)
+        else:
+            print(f"\nNenhum funcionário encontrado com o nome '{nome}'.\n")
+
+    def calcular_media_salarial(self):
+        if not self.funcionarios:
+            print("\nNão há funcionários para calcular a média salarial.\n")
+            return
+        media = sum(f.salario for f in self.funcionarios) / len(self.funcionarios)
+        print(f"\nMédia salarial: R${media:.2f}\n")
+
+
+def menu():
+    empresa = Empresa()
+
+    while True:
+        print("=== SISTEMA DE GESTÃO DE FUNCIONÁRIOS ===")
+        print("1 - Adicionar funcionário")
+        print("2 - Listar funcionários")
+        print("3 - Buscar funcionário por nome")
+        print("4 - Calcular média salarial")
+        print("5 - Sair")
+        opcao = input("\nEscolha uma opção: ")
+
+        if opcao == "1":
+            nome = input("Nome: ")
+            cargo = input("Cargo: ")
+            try:
+                salario = float(input("Salário: "))
+                empresa.adicionar_funcionario(nome, cargo, salario)
+            except ValueError:
+                print("Salário inválido. Digite um número.\n")
+
+        elif opcao == "2":
+            empresa.listar_funcionarios()
+
+        elif opcao == "3":
+            nome = input("Digite o nome do funcionário: ")
+            empresa.buscar_por_nome(nome)
+
+        elif opcao == "4":
+            empresa.calcular_media_salarial()
+
+        elif opcao == "5":
+            print("\nEncerrando o programa. Até mais!")
+            break
+
+        else:
+            print("\nOpção inválida. Tente novamente.\n")
+
+
+if __name__ == "__main__":
+    menu()
